@@ -1,0 +1,36 @@
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+}
+
+#app {
+  width: 100%;
+  height: 100%;
+}
+
+:root {
+  --el-menu-item-height: 42px !important;
+}
+
+.el-menu {
+  border-right: none !important;
+}
+
+pre {
+  height: 100%;
+}
+
+.hljs {
+  height: 100%;
+  border: solid 1px #e0e0e0;
+  overflow: auto;
+}
+
+.hljs:hover {
+  border-color: #409eff;
+}
