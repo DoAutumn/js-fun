@@ -3,7 +3,7 @@ import axios from "axios"
 import { ref } from 'vue';
 import { ElMessage } from "element-plus";
 
-const menuList: any = ref([]), fileContent = ref(''), defActive = ref(''), searchValue = ref('');
+const menuList: any = ref([]), fileContent = ref(''), defActive = ref(''), searchValue = ref(''), language = ref('javascript');
 
 axios.get(`https://gitee.com/api/v5/gists?access_token=44e933a2118c5bf20add2de1fa664da9`).then(res => {
   const list = res.data.filter((item: any) => item.description !== 'bookmarks')
@@ -12,6 +12,7 @@ axios.get(`https://gitee.com/api/v5/gists?access_token=44e933a2118c5bf20add2de1f
       if (!i && !j) {
         defActive.value = key
         fileContent.value = item.files[key].content
+        setLanguage()
       }
       return { key: key, file: item.files[key] }
     })
@@ -22,6 +23,7 @@ axios.get(`https://gitee.com/api/v5/gists?access_token=44e933a2118c5bf20add2de1f
 
 const handleClick = (item: any) => {
   fileContent.value = item.file.content
+  setLanguage()
 }
 
 const handleCopy = () => {
@@ -39,6 +41,7 @@ const handleSearch = () => {
     if (item) {
       defActive.value = item.key
       fileContent.value = item.file.content
+      setLanguage()
       return
     }
   }
@@ -46,6 +49,10 @@ const handleSearch = () => {
     showClose: false,
     message: '未检索到相关内容.',
   })
+}
+
+const setLanguage = () => {
+  language.value = fileContent.value.indexOf('html') !== -1 || fileContent.value.indexOf('xml') !== -1 ? 'xml' : 'javascript'
 }
 </script>
 
@@ -69,7 +76,7 @@ const handleSearch = () => {
     <div class="content">
       <template v-if="fileContent">
         <el-button type="primary" size="small" class="copy-btn" @click="handleCopy()">复制代码</el-button>
-        <highlightjs language="javascript" :autodetect="false" :code="fileContent"></highlightjs>
+        <highlightjs :language="language" :autodetect="false" :code="fileContent"></highlightjs>
       </template>
     </div>
   </div>
